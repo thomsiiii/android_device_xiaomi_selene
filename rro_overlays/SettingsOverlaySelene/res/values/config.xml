@@ -16,8 +16,11 @@
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <!-- Whether to show Smooth Display feature in Settings Options -->
+     <!-- Whether to show Smooth Display feature in Settings Options -->
     <bool name="config_show_smooth_display">true</bool>
+
+    <!-- Pocket Lock -->
+    <bool name="config_pocketModeSupported">true</bool>
 
     <!-- Smart Charging -->
     <bool name="config_deviceSupportSmartCharging">true</bool>

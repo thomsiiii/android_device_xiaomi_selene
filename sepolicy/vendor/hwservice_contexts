@@ -15,3 +15,6 @@ vendor.xiaomi.hardware.fingerprintextension::IXiaomiFingerprint               u:
 # NFC
 vendor.nxp.nxpnfc::INxpNfc                                                    u:object_r:hal_nfc_hwservice:s0
 vendor.nxp.nxpese::INxpEse                                                    u:object_r:hal_nfc_hwservice:s0
+
+# POWER
+vendor.mediatek.hardware.mtkpower::IMtkPower                                  u:object_r:hal_power_hwservice:s0

@@ -1,5 +1,7 @@
 # Camera
 type persist_camera_data_file, data_file_type, file_type;
+type hal_camerapostproc_xiaomi_hwservice, fs_type, proc_type;
+type hal_misys_hwservice, fs_type, sysfs_type;
 
 # Fingerprint
 type fingerprint_data_file, core_data_file_type, data_file_type, file_type;
@@ -10,6 +12,7 @@ type ccci_aud, dev_type;
 
 # Graphics
 type sysfs_mali, fs_type, sysfs_type;
+type sysfs_fpsinfo, fs_type, sysfs_type;
 
 # Latency
 type latency_device, dev_type;
@@ -22,6 +25,7 @@ type vendor_sysfs_charger_supply, fs_type, sysfs_type;
 type vendor_sysfs_bms_supply, fs_type, sysfs_type;
 type vendor_sysfs_parallel_supply, fs_type, sysfs_type;
 type vendor_sysfs_main_supply, fs_type, sysfs_type;
+type sysfs_battery_supply, fs_type, sysfs_type;
 
 # Performance
 type proc_vm_dirty, fs_type, proc_type;

@@ -132,5 +132,7 @@ void vendor_load_properties()
         property_override(string("ro.product.") + prop + string("brand"), brand);
         property_override(string("ro.product.") + prop + string("device"), device);
         property_override(string("ro.product.") + prop + string("model"), model);
+        property_override("ro.product.model", "Redmi 10");
+        property_override("ro.product.device", "selene");
     }
 }
