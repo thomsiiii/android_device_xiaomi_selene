@@ -16,6 +16,9 @@ import /vendor/etc/init/hw/init.modem.rc
 # *** DO NOT import the new rc file after this line ***
 
 on early-init
+    write /proc/sys/kernel/sched_boost 1
+    
+on early-init
     write /proc/bootprof "INIT:early-init"
     # boot perf. tune
     write /proc/perfmgr/boost_ctrl/cpu_ctrl/boot_freq "0 0 0 0"
