@@ -14,9 +14,6 @@ import init.mishow.ctl.rc
 # init.modem.rc must be the LAST rc file because vold.post_fs_data_done is set in it
 import /vendor/etc/init/hw/init.modem.rc
 # *** DO NOT import the new rc file after this line ***
-
-on early-init
-    write /proc/sys/kernel/sched_boost 1
     
 on early-init
     write /proc/bootprof "INIT:early-init"
@@ -56,7 +53,7 @@ on init
     write /dev/cpuset/foreground/cpus 0-7
     write /dev/cpuset/foreground/boost/cpus 0-7
     write /dev/cpuset/background/cpus 0-3
-    write /dev/cpuset/system-background/cpus 0-5
+    write /dev/cpuset/system-background/cpus 0-3
     write /dev/cpuset/top-app/cpus 0-7
 
 on late-init
@@ -131,7 +128,7 @@ on charger
     start mi_thermald
 
 on fs
-    start vendor.boot-hal-1-1
+    start vendor.boot-hal-1-2
 
     # mount fstab
     write /proc/bootprof "INIT:Mount_START"
@@ -988,6 +985,7 @@ on property:sys.boot_completed=1
     write /proc/cpufreq/cpufreq_sched_disable 0
     chown system system /dev/stune/foreground/schedtune.prefer_idle
     chown system system /dev/stune/top-app/schedtune.prefer_idle
+    write /dev/stune/top-app/schedtune.boost 1
     chown system system /dev/stune/rt/schedtune.prefer_idle
     write /dev/stune/foreground/schedtune.prefer_idle 0
     write /dev/stune/top-app/schedtune.prefer_idle 0
@@ -1241,3 +1239,8 @@ on property:persist.sys.MT6768.dt2w=0
 
 on property:persist.sys.MT6768.dt2w=1
     exec -- /vendor/bin/dt2w_event 5
+    
+on property:persist.vendor.mtk_aurisys_framework_support=*
+    # Fix VoIP apps call echo
+    stop audioserver
+    start audioserver

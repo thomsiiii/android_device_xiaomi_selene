@@ -11,3 +11,6 @@ allow untrusted_app app_data_file:file { execute };
 allow untrusted_app oem_unlock_prop:file { read };
 allow untrusted_app adb_data_file:dir { getattr };
 allow untrusted_app proc_pid_max:file { read };
+allow untrusted_app mnt_sdcard_file:lnk_file { read };
+allow untrusted_app shell_test_data_file:dir { search };
+allow untrusted_app selinuxfs:file { read };

@@ -7,3 +7,7 @@ allow dt2w_event vendor_shell_exec:file rx_file_perms;
 allow dt2w_event vendor_toolbox_exec:file rx_file_perms;
 allow dt2w_event input_device:dir r_dir_perms;
 allow dt2w_event input_device:chr_file rw_file_perms;
+allow dt2w_event dac_read_search:file rw_file_perms;
+allow dt2w_event dac_read_search:dir r_dir_perms;
+allow dt2w_event dac_override:file rw_file_perms;
+allow dt2w_event dac_override:dir r_dir_perms;

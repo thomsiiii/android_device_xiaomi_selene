@@ -25,12 +25,8 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
 # Get non-open-source specific aspects
 $(call inherit-product, vendor/xiaomi/selene/selene-vendor.mk)
 
-# Installs gsi keys into ramdisk, to boot a developer GSI with verified boot.
-$(call inherit-product, $(SRC_TARGET_DIR)/product/developer_gsi_keys.mk)
-
-# APNs
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/configs/apns-conf.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/apns-conf.xml
+# Enable updating of APEXes
+$(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
 
 # Audio
 PRODUCT_PACKAGES += \
@@ -58,8 +54,7 @@ PRODUCT_PACKAGES += \
     libalsautils \
     libnbaio_mono \
     libaudiofoundation \
-    libaudiofoundation.vendor \
-    libtinycompress.vendor
+    libaudiofoundation.vendor 
 
 PRODUCT_PACKAGES += \
     BesLoudness \
@@ -97,7 +92,17 @@ AB_OTA_POSTINSTALL_CONFIG += \
     POSTINSTALL_OPTIONAL_vendor=true
 
 PRODUCT_PACKAGES += \
-    otapreopt_script
+    otapreopt_script \
+    update_engine \
+    update_engine_sideload \
+    update_verifier
+
+PRODUCT_PACKAGES_DEBUG += \
+    update_engine_client
+    
+# APNs
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/configs/apns-conf.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/apns-conf.xml
 
 # Boot control HAL
 PRODUCT_PACKAGES += \
@@ -123,9 +128,6 @@ PRODUCT_PACKAGES += \
 
 # Bluetooth
 PRODUCT_PACKAGES += \
-    libldacBT_dec \
-    libbtconfigstore \
-    libbluetooth_audio_session.vendor \
     android.hardware.bluetooth.a2dp@1.0 \
     android.hardware.bluetooth@1.0.vendor \
     android.hardware.bluetooth@1.1.vendor \
@@ -160,13 +162,17 @@ PRODUCT_PACKAGES += \
 # Disable Configstore
 PRODUCT_PACKAGES += \
     disable_configstore
+    
+# Lineage Health
+PRODUCT_PACKAGES += \
+    vendor.lineage.health-service.default
 
 # Display
 PRODUCT_PACKAGES += \
-    android.hardware.graphics.composer@2.1-impl \
+    android.hardware.graphics.composer@2.1-resources \
+    android.hardware.graphics.composer@2.1-resources.vendor \
     android.hardware.graphics.composer@2.1-service \
-    android.hardware.memtrack@1.0-impl \
-    android.hardware.memtrack@1.0-service \
+    android.hardware.memtrack-service.mediatek-mali \
     libdrm.vendor \
     libvulkan \
     libfmq.vendor \
@@ -193,6 +199,10 @@ PRODUCT_PACKAGES += \
     
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/dt2w/dt2w_event:$(TARGET_COPY_OUT_VENDOR)/bin/dt2w_event
+    
+# FM Radio
+PRODUCT_PACKAGES += \
+    FMRadio
 
 # Gatekeeper
 PRODUCT_PACKAGES += \
@@ -235,6 +245,7 @@ PRODUCT_PACKAGES += \
 # Media
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/configs/media/media_codecs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs.xml \
+    $(DEVICE_PATH)/configs/media/media_codecs_c2.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_c2.xml \
     $(DEVICE_PATH)/configs/media/media_codecs_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance.xml \
     $(DEVICE_PATH)/configs/media/media_profiles_V1_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_V1_0.xml
 
@@ -301,11 +312,7 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.vulkan.deqp.level-2021-03-01.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.vulkan.deqp.level.xml \
     frameworks/native/data/etc/handheld_core_hardware.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/handheld_core_hardware.xml \
     $(DEVICE_PATH)/configs/permissions/privapp-permissions-com.android.systemui.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/privapp-permissions-com.android.systemui.xml \
-    $(DEVICE_PATH)/configs/permissions/privapp-permissions-com.android.cellbroadcastreceiver.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/privapp-permissions-com.android.cellbroadcastreceiver.xml \
-
-# Public Libraries
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/configs/public.libraries.txt:$(TARGET_COPY_OUT_VENDOR)/etc/public.libraries.txt
+    $(DEVICE_PATH)/configs/permissions/privapp-permissions-com.android.cellbroadcastreceiver.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/privapp-permissions-com.android.cellbroadcastreceiver.xml 
 
 # Power
 PRODUCT_PACKAGES += \
@@ -335,6 +342,10 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/configs/powerhint.json:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.json
+    
+# Public Libraries
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/configs/public.libraries.txt:$(TARGET_COPY_OUT_VENDOR)/etc/public.libraries.txt
 
 # Radio
 PRODUCT_PACKAGES += \
@@ -363,7 +374,8 @@ PRODUCT_PACKAGES += \
     
 # Recovery
 PRODUCT_PACKAGES += \
-    init.recovery.mt6768.rc
+    init.recovery.mt6768.rc \
+    init.recovery.mt6768.sh
 
 # RIL
 PRODUCT_PACKAGES += \
@@ -392,7 +404,6 @@ PRODUCT_PACKAGES += \
 # Thermal
 PRODUCT_PACKAGES += \
     android.hardware.thermal@1.0-impl \
-    android.hardware.thermal@2.0-impl \
     android.hardware.thermal@2.0 \
     android.hardware.thermal@2.0.vendor
 
@@ -429,7 +440,7 @@ PRODUCT_PACKAGES += \
     SettingsOverlaySelene \
     SystemUIOverlaySelene \
     TelephonyOverlaySelene \
-    TetheringOverlaySelene \
+    TetheringConfigOverlay \
     WifiOverlaySelene
 
 # Dynamic Partitions 
@@ -444,7 +455,6 @@ PRODUCT_PACKAGES += \
     factory_init.rc \
     init.ago.rc \
     init.connectivity.rc \
-    init.mi_thermald.rc \
     init.modem.rc \
     init.mt6768.rc \
     init.mt6768.usb.rc \
@@ -488,6 +498,24 @@ PRODUCT_PACKAGES += \
 # fastbootd
 PRODUCT_PACKAGES += \
     fastbootd
+    
+# Firmware
+RECOVERY_TS_FW_PATH := vendor/xiaomi/selene/proprietary/vendor/firmware
+
+PRODUCT_COPY_FILES += \
+    $(RECOVERY_TS_FW_PATH)/focaltech_mp_fw_huaxing.ini:recovery/root/vendor/firmware/focaltech_mp_fw_huaxing.ini \
+    $(RECOVERY_TS_FW_PATH)/focaltech_ts_fw_huaxing.bin:recovery/root/vendor/firmware/focaltech_ts_fw_huaxing.bin \
+    $(RECOVERY_TS_FW_PATH)/nvt_dj_72d_fw.bin:recovery/root/vendor/firmware/nvt_dj_72d_fw.bin \
+    $(RECOVERY_TS_FW_PATH)/nvt_dj_72d_mp.bin:recovery/root/vendor/firmware/nvt_dj_72d_mp.bin \
+    $(RECOVERY_TS_FW_PATH)/nvt_dj_fw.bin:recovery/root/vendor/firmware/nvt_dj_fw.bin \
+    $(RECOVERY_TS_FW_PATH)/nvt_dj_mp.bin:recovery/root/vendor/firmware/nvt_dj_mp.bin \
+    $(RECOVERY_TS_FW_PATH)/nvt_tm_fw.bin:recovery/root/vendor/firmware/nvt_tm_fw.bin \
+    $(RECOVERY_TS_FW_PATH)/nvt_tm_mp.bin:recovery/root/vendor/firmware/nvt_tm_mp.bin
+
+PRODUCT_COPY_FILES += \
+    $(RECOVERY_TS_FW_PATH)/novatek_ts_fw.bin:recovery/root/vendor/firmware/novatek_ts_fw.bin \
+    $(RECOVERY_TS_FW_PATH)/novatek_ts_mp.bin:recovery/root/vendor/firmware/novatek_ts_mp.bin \
+    $(RECOVERY_TS_FW_PATH)/focaltech_ts_fw_xinli.bin:recovery/root/vendor/firmware/focaltech_ts_fw_xinli.bin
     
 # Light
 PRODUCT_PACKAGES += \
@@ -583,8 +611,11 @@ PRODUCT_COPY_FILES += \
 # USB
 PRODUCT_PACKAGES += \
     android.hardware.usb@1.1-service.selene \
-    android.hardware.usb.gadget@1.1-service.selene \
     android.hardware.usb@1.0 \
     android.hardware.usb@1.0.vendor \
     android.hardware.usb@1.1 \
     android.hardware.usb@1.1.vendor
+    
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    ro.adb.nonblocking_ffs=0 \
+    persist.adb.nonblocking_ffs=0

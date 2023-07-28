@@ -198,11 +198,8 @@ vendor/lib64/libwvhidl.so
 vendor/lib64/mediadrm/libwvdrmengine.so
 
 # Display-Hardware
-vendor/bin/hw/android.hardware.graphics.allocator@4.0-service-mediatek
 vendor/etc/init/android.hardware.graphics.allocator@4.0-service-mediatek.rc
-vendor/lib/hw/memtrack.mt6768.so
 vendor/lib64/hw/hwcomposer.mt6768.so
-vendor/lib64/hw/memtrack.mt6768.so
 
 # Fingerprint
 vendor/lib64/com.fingerprints.extension@1.0.so
@@ -308,6 +305,7 @@ vendor/lib/hw/gatekeeper.beanpod.so
 vendor/lib64/hw/gatekeeper.beanpod.so
 
 # Graphics (Allocator) - from selene-user 13 TP1A.220624.014 V14.0.2.0.TKUCNXM release-keys
+vendor/bin/hw/android.hardware.graphics.allocator@4.0-service-mediatek|b6fa0dedf2f63d1e50f5971d8ce0d08ac879e262
 vendor/lib/hw/android.hardware.graphics.allocator@4.0-impl-mediatek.so|76ad23cf369d57c4e54b343a34db5857ea2af3ee
 vendor/lib64/hw/android.hardware.graphics.allocator@4.0-impl-mediatek.so|fcd8bb4a81e0325976121558bd8fec691e68c54e
 

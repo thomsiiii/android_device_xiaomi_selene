@@ -1,5 +1,5 @@
 runtime_resource_overlay {
-    name: "TetheringConfigOverlaySelene",
+    name: "TetheringConfigOverlay",
     theme: "TetheringConfigOverlay",
     sdk_version: "current",
     vendor: true

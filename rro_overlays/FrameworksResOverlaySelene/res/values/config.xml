@@ -71,6 +71,9 @@
 
     <!-- If true, the display will be shifted around in ambient mode. -->
     <bool name="config_enableBurnInProtection">true</bool>
+    
+    <!-- Should the pinner service pin the Camera application? -->
+    <bool name="config_pinnerCameraApp">false</bool>
 
     <!-- Should the pinner service pin the Home application? -->
      <bool name="config_pinnerHomeApp">true</bool>
@@ -80,6 +83,10 @@
 
     <!-- Whether device supports double tap to wake -->
      <bool name="config_supportDoubleTapWake">true</bool>
+     
+     <!-- Whether or not wcg (wide color gamut) should be enabled on this device,
+         we only enabled it while the device has ability of mixed color spaces composition -->
+    <bool name="config_enableWcgMode">true</bool>
 
     <!-- Indicate whether to allow the device to suspend when the screen is off
          due to the proximity sensor.  This resource should only be set to true
@@ -562,10 +569,6 @@
          fading edges is prohibitively expensive on most GPUs. -->
     <bool name="config_ui_enableFadingMarquee">true</bool>
     
-    <!-- Whether or not wcg (wide color gamut) should be enabled on this device,
-         we only enabled it while the device has ability of mixed color spaces composition -->
-    <bool name="config_enableWcgMode">true</bool>
-    
     <!-- Determines whether the shell features all run on another thread. -->
     <bool name="config_enableShellMainThread">true</bool>
     
@@ -578,9 +581,15 @@
         <item>1</item> <!-- COLOR_MODE_BOOSTED -->
     </integer-array>
 
+    <!-- Default value for performant auth feature. -->
+    <bool name="config_performantAuthDefault">true</bool>
+    
     <!-- True if Unprocessed audio source supports the required frequency range and level -->
     <bool name="config_supportAudioSourceUnprocessed">true</bool>
 
     <!-- Exempt ImsService from privacy (location) indicators -->
     <string name="config_systemAudioIntelligence" translatable="false">com.mediatek.ims</string>
+    
+    <!-- Path to fast charging status file to detect whether an oem fast charger is active -->
+    <string name="config_oemFastChargerStatusPath" translatable="false">/sys/class/power_supply/bms/fastcharge_mode</string>
 </resources>
